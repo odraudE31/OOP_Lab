@@ -5,6 +5,7 @@ public class Cliente {
     private Endereco endereco;
     private boolean especial;
 
+    //CONSTRUCTOR
     public Cliente(String nome, String cpf, String rg, Endereco endereco, boolean especial) {
         this.nome = nome;
         this.cpf = cpf;

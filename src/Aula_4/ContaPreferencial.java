@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 public class ContaPreferencial extends Conta {
+
+    //constructor
     public ContaPreferencial(String agencia, String numero, ArrayList<Cliente> titulares) {
         super(agencia, numero, titulares);
         for (Cliente c : titulares) {

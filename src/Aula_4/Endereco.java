@@ -1,4 +1,3 @@
-// Endereco.java
 public class Endereco {
     private String logradouro;
     private int numero;
@@ -7,6 +6,7 @@ public class Endereco {
     private String cidade;
     private String estado;
 
+    //constructor
     public Endereco(String logradouro, int numero, String complemento, String cep, String cidade, String estado) {
         this.logradouro = logradouro;
         this.numero = numero;
