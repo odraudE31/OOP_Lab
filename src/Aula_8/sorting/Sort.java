@@ -1,5 +1,5 @@
 package sorting;
 
-public abstract class Sort {
-    public abstract int[] sort(int[] a);
+public abstract class Sort<T extends Comparable<T>> {
+    public abstract T[] sort(T[] a);
 }

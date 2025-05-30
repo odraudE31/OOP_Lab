@@ -1,29 +1,33 @@
 package sorting;
 
-import sorting.Sort;
+public class Mergesort<T extends Comparable<T>> extends Sort<T> {
 
-public class Mergesort extends Sort{
-
-    @Override
-    public int[] sort(int[] a) {
-        mergesort(a, 0, a.length - 1);
+    public T[] sort(T[] a, boolean ascending) {
+        if (!sorting.Utility.isHomogeneous(a)) {
+            throw new IllegalArgumentException("O array contém elementos de tipos diferentes.");
+        }
+        mergesort(a, 0, a.length - 1, ascending);
         return a;
     }
 
-    // Mergesort
-    private void mergesort(int[] a, int i, int j) {
-        if (j <= i) return; /* already sorted */ 
-        int midpoint = (i+j)/2;
-        mergesort(a, i, midpoint);
-        mergesort(a, midpoint+1, j);
-        merge(a, i, midpoint, j);
+    @Override
+    public T[] sort(T[] a) {
+        return sort(a, true);
     }
-    
-    private void merge(int[] a, int start, int mid, int end) {
-        int[] aux = new int[end-start+1];
-        int i = start, j = mid+1, k = 0;
+
+    private void mergesort(T[] a, int i, int j, boolean ascending) {
+        if (j <= i) return;
+        int midpoint = (i + j) / 2;
+        mergesort(a, i, midpoint, ascending);
+        mergesort(a, midpoint + 1, j, ascending);
+        merge(a, i, midpoint, j, ascending);
+    }
+
+    private void merge(T[] a, int start, int mid, int end, boolean ascending) {
+        Object[] aux = new Object[end - start + 1];
+        int i = start, j = mid + 1, k = 0;
         while (i <= mid && j <= end) {
-            if (a[i] <= a[j]) {
+            if (ascending ? a[i].compareTo(a[j]) <= 0 : a[i].compareTo(a[j]) >= 0) {
                 aux[k++] = a[i++];
             } else {
                 aux[k++] = a[j++];
@@ -36,6 +40,6 @@ public class Mergesort extends Sort{
             aux[k++] = a[j++];
         }
         for (i = start; i <= end; i++)
-            a[i] = aux[i-start];
+            a[i] = (T) aux[i - start];
     }
 }
