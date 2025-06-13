@@ -1,9 +1,5 @@
 package src.mvc;
 
-
-
-// Represents statistics about a team
-
 public class TeamStats {
     public static final int pointsForWin = 3;
     public static final int pointsForDraw = 1;
@@ -95,6 +91,32 @@ public class TeamStats {
         } else {
             numberOfDraws++;
         }
+    }
+
+    // Métodos auxiliares adicionados:
+
+    public void incrementMatches() {
+        numberOfMatches++;
+    }
+
+    public void addGoalsFor(int goals) {
+        this.goalsFor += goals;
+    }
+
+    public void addGoalsAgainst(int goals) {
+        this.goalsAgainst += goals;
+    }
+
+    public void addWin() {
+        numberOfWins++;
+    }
+
+    public void addLoss() {
+        numberOfLosses++;
+    }
+
+    public void addDraw() {
+        numberOfDraws++;
     }
 
     @Override

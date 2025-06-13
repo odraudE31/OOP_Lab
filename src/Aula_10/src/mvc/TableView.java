@@ -1,39 +1,32 @@
 package src.mvc;
 
-
-// This view shows the league stats
-//
-// Lembre-se: você copiou isso de outro projeto e precisa ainda
-// modificar para se adequar ao projeto atual
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class TableView extends View implements ActionListener {
+
+public class TableView extends View implements ActionListener, ModelObserver {
 
     private JTable table;
     private DefaultTableModel tableModel;
 
     public TableView(Controller theController, LeagueStatsModel theModel) {
         super(theController, theModel);
+        theModel.addObserver(this); 
     }
 
-    // Creates the GUI elements
     @Override
     public void createView() {
-
-        frame = new JFrame("Patients");
+        frame = new JFrame("Tabela do Brasileirão");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
+        frame.setSize(800, 400);
         frame.setLayout(new BorderLayout());
 
         tableModel = new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"ID", "Name", "Age", "Weight"}
+            new Object[][]{},
+            new String[]{"Time", "Pontos", "Jogos", "Vitórias", "Empates", "Derrotas", "Gols Pró", "Gols Contra", "Saldo"}
         );
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -42,34 +35,41 @@ class TableView extends View implements ActionListener {
         JPanel btnPanel = new JPanel(new GridLayout(1, 2));
         frame.add(btnPanel, BorderLayout.SOUTH);
 
-        JButton updateButton = new JButton("Update Table");
+        JButton updateButton = new JButton("Atualizar Tabela");
         updateButton.addActionListener(this);
         btnPanel.add(updateButton);
 
         populateTable();
-
     }
 
-    // Retrieves and displays data from model
     public void populateTable() {
-        String[][] people = {
-            {"103", "Anna Parker", "35", "57"},
-            {"42", "John Smith", "54", "79"}
-        };
+        tableModel.setRowCount(0); // Limpa a tabela
 
-        for (String[] person: people) {
-            tableModel.addRow(new Object[] { 
-                   person[0], person[1], person[2], person[3]
+        for (TeamStats team : model.getResults()) {
+            tableModel.addRow(new Object[]{
+                team.getName(),
+                team.getScore(),
+                team.getNumberOfMatches(),
+                team.getNumberOfWins(),
+                team.getNumberOfDraws(),
+                team.getNumberOfLosses(),
+                team.getGoalsFor(),
+                team.getGoalsAgainst(),
+                team.getGoalsDifference()
             });
         }
-        
+
         table.repaint();
     }
 
-    // Process 'Update Table' button click
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TO-DO
-    }            
+        populateTable();
+    }
 
+    // Atualiza automaticamente quando o modelo muda
+    @Override
+    public void modelChanged() {
+        populateTable();
+    }
 }
